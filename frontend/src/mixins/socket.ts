@@ -167,7 +167,8 @@ export default defineComponent({
             // Handling events from agents
             let agentSocket = new AgentSocket();
             socket.on("agent", (eventName : unknown, ...args : unknown[]) => {
-                agentSocket.call(eventName, ...args);
+                // Add type assertion for eventName
+                agentSocket.call(eventName as string, ...args);
             });
 
             socket.on("connect", () => {
@@ -235,26 +236,35 @@ export default defineComponent({
                 this.$router.push("/setup");
             });
 
-            agentSocket.on("terminalWrite", (terminalName, data) => {
-                const terminal = terminalMap.get(terminalName);
+            agentSocket.on("terminalWrite", (terminalName: unknown, data: unknown) => {
+                const terminal = terminalMap.get(terminalName as string);
                 if (!terminal) {
                     //console.error("Terminal not found: " + terminalName);
                     return;
                 }
-                terminal.write(data);
+                terminal.write(data as string | Uint8Array);
             });
 
-            agentSocket.on("stackList", (res) => {
-                if (res.ok) {
-                    if (!res.endpoint) {
-                        this.stackList = res.stackList;
+            // Define interface for stack list response
+            interface StackListResponse {
+                ok: boolean;
+                endpoint?: string;
+                stackList: Record<string, any>;
+            }
+            
+            agentSocket.on("stackList", (res: unknown) => {
+                // Type guard to ensure res has the expected structure
+                const typedRes = res as StackListResponse;
+                if (typedRes.ok) {
+                    if (!typedRes.endpoint) {
+                        this.stackList = typedRes.stackList;
                     } else {
-                        if (!this.allAgentStackList[res.endpoint]) {
-                            this.allAgentStackList[res.endpoint] = {
+                        if (!this.allAgentStackList[typedRes.endpoint]) {
+                            this.allAgentStackList[typedRes.endpoint] = {
                                 stackList: {},
                             };
                         }
-                        this.allAgentStackList[res.endpoint].stackList = res.stackList;
+                        this.allAgentStackList[typedRes.endpoint].stackList = typedRes.stackList;
                     }
                 }
             });
