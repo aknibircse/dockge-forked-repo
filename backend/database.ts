@@ -1,6 +1,6 @@
 import { log } from "./log";
 import { R } from "redbean-node";
-import { RackgeServer } from "./dockge-server";
+import { RackgeServer } from "./rackge-server";
 import fs from "fs";
 import path from "path";
 import knex from "knex";
@@ -22,7 +22,7 @@ interface DBConfig {
 
 export class Database {
     /**
-     * SQLite file path (Default: ./data/dockge.db)
+     * SQLite file path (Default: ./data/rackge.db)
      * @type {string}
      */
     static sqlitePath : string;
@@ -108,7 +108,7 @@ export class Database {
         log.info("db", `Database Type: ${dbConfig.type}`);
 
         if (dbConfig.type === "sqlite") {
-            this.sqlitePath = path.join(this.server.config.dataDir, "dockge.db");
+            this.sqlitePath = path.join(this.server.config.dataDir, "rackge.db");
             Dialect.prototype._driver = () => sqlite;
 
             config = {
@@ -180,6 +180,13 @@ export class Database {
         // Using knex migrations
         // https://knexjs.org/guide/migrations.html
         // https://gist.github.com/NigelEarle/70db130cc040cc2868555b29a0278261
+        
+        // Skip migrations if RACKGE_SKIP_DB_MIGRATION is set to true
+        if (process.env.RACKGE_SKIP_DB_MIGRATION === "true") {
+            log.info("db", "Skipping database migrations as RACKGE_SKIP_DB_MIGRATION is set to true");
+            return;
+        }
+        
         try {
             await R.knex.migrate.latest({
                 directory: Database.knexMigrationsPath,

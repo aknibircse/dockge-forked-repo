@@ -2,7 +2,7 @@ import { Database } from "../backend/database";
 import { R } from "redbean-node";
 import readline from "readline";
 import { User } from "../backend/models/user";
-import { RackgeServer } from "../backend/dockge-server";
+import { RackgeServer } from "../backend/rackge-server";
 import { log } from "../backend/log";
 import { io } from "socket.io-client";
 import { BaseRes } from "../common/util-common";

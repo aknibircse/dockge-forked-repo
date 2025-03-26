@@ -53,7 +53,7 @@
 
                     <!-- TODO: Search online: https://hub.docker.com/api/content/v1/products/search?q=louislam%2Fuptime&source=community&page=1&page_size=4 -->
                     <datalist id="image-datalist">
-                        <option value="louislam/uptime-kuma:1" />
+                        <option value="aknibircse/monitx:1" />
                     </datalist>
                     <div class="form-text"></div>
                 </div>

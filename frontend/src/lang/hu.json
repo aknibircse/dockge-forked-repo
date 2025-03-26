@@ -73,7 +73,7 @@
     "newUpdate": "Új Frissítés",
     "currentEndpoint": "Jelenlegi",
     "agentOnline": "Online",
-    "dockgeAgent": "Rackge Felügyelő | Rackge Felügyelők",
+    "rackgeAgent": "Rackge Felügyelő | Rackge Felügyelők",
     "agentOffline": "Offline",
     "connecting": "Csatlakozás",
     "connect": "Csatlakozás",
@@ -111,6 +111,6 @@
     "Cannot connect to the socket server.": "A Socket csatlakozás nem elérhető.",
     "connecting...": "Csatlakozás a socket szerver-hez…",
     "url": "URL | URL-ek",
-    "dockgeURL": "Rackge URL (pl. http://127.0.0.1:5001)",
+    "rackgeURL": "Rackge URL (pl. http://127.0.0.1:5050)",
     "LongSyntaxNotSupported": "A hosszú szintaxis itt nem támogatott. Használja a YAML szerkesztőt."
 }

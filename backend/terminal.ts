@@ -1,6 +1,28 @@
-import { RackgeServer } from "./dockge-server";
+import { RackgeServer } from "./rackge-server";
 import * as os from "node:os";
-import * as pty from "@homebridge/node-pty-prebuilt-multiarch";
+// Try to import pty, but don't fail if it's not available
+let pty: any;
+
+// Define IPty interface for TypeScript
+interface IPty {
+    pid: number;
+    cols: number;
+    rows: number;
+    process: string;
+    kill(): void;
+    resize(cols: number, rows: number): void;
+    write(data: string): void;
+    on(event: string, listener: (...args: any[]) => void): void;
+    removeAllListeners(event?: string): void;
+    onData(listener: (data: string) => void): void;
+    onExit(listener: (exitCode: number, signal?: number | undefined) => void): void;
+}
+
+try {
+    pty = require("node-pty-prebuilt-multiarch");
+} catch (error) {
+    console.warn("node-pty module not available, terminal functionality will be limited");
+}
 import { LimitQueue } from "./utils/limit-queue";
 import { RackgeSocket } from "./util-server";
 import {
@@ -19,7 +41,7 @@ export class Terminal {
 
     protected static terminalMap : Map<string, Terminal> = new Map();
 
-    protected _ptyProcess? : pty.IPty;
+    protected _ptyProcess?: IPty;
     protected server : RackgeServer;
     protected buffer : LimitQueue<string> = new LimitQueue(100);
     protected _name : string;
@@ -122,17 +144,22 @@ export class Terminal {
             });
 
             // On Data
-            this._ptyProcess.onData((data) => {
-                this.buffer.pushItem(data);
+            if (this._ptyProcess) {
+                this._ptyProcess.onData((data: string) => {
+                    this.buffer.pushItem(data);
 
-                for (const socketID in this.socketList) {
-                    const socket = this.socketList[socketID];
-                    socket.emitAgent("terminalWrite", this.name, data);
-                }
-            });
+                    for (const socketID in this.socketList) {
+                        const socket = this.socketList[socketID];
+                        socket.emitAgent("terminalWrite", this.name, data);
+                    }
+                });
 
-            // On Exit
-            this._ptyProcess.onExit(this.exit);
+                // On Exit
+                // Adapt the exit method to match the expected signature
+                this._ptyProcess.onExit((exitCode, signal) => {
+                    this.exit({ exitCode, signal });
+                });
+            }
         } catch (error) {
             if (error instanceof Error) {
                 clearInterval(this.keepAliveInterval);

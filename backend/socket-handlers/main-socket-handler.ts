@@ -1,7 +1,7 @@
 // @ts-ignore
 import composerize from "composerize";
 import { SocketHandler } from "../socket-handler.js";
-import { RackgeServer } from "../dockge-server";
+import { RackgeServer } from "../rackge-server.js";
 import { log } from "../log";
 import { R } from "redbean-node";
 import { loginRateLimiter, twoFaRateLimiter } from "../rate-limiter";

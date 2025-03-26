@@ -1,15 +1,59 @@
 services:
   rackge:
-    image: louislam/dockge:1
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      target: development
     restart: unless-stopped
     ports:
       # Host Port : Container Port
-      - 5020:5001
+      - 5555:5000  # Frontend dev port (Vite server)
+      - 5050:5050  # Backend port (fixed for development)
+      - 3000:3000  # Alternative frontend port if needed
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./data:/app/data
+      - ${RACKGE_DATA_DIR:-./data}:/app/data
       # Mount stacks directory - using a local directory instead of /opt/stacks
-      - ./stacks:/app/stacks
+      - ${RACKGE_STACKS_DIR:-./stacks}:/app/stacks
+      # Hot-reload volumes
+      - ./backend:/app/backend
+      - ./frontend:/app/frontend
+      - ./common:/app/common
+      - ./package.json:/app/package.json
+      - ./tsconfig.json:/app/tsconfig.json
+      - ./.env:/app/.env
+      - ./docker/dev-entrypoint.sh:/app/dev-entrypoint.sh
+      - ./rollup-fix.cjs:/app/rollup-fix.cjs
+      # Add vite.config.js for Alpine compatibility
+      - ./vite.config.js:/app/vite.config.js
+    env_file:
+      - .env
     environment:
-      # Tell Rackge where is your stacks directory
-      - RACKGE_STACKS_DIR=/app/stacks
+      # Additional environment variables
+      - RACKGE_IS_CONTAINER=true
+      - STORE_PATH=/opt/.pnpm-store
+      # Native module handling
+      - REBUILD_SQLITE=false
+      - USE_PREBUILT_FRONTEND=true
+      - ROLLUP_NATIVE_DISABLE=true
+      - SKIP_NATIVE_BUILD=true
+      # Include all dependencies
+      - npm_config_optional=true
+      - npm_config_include_dev=true
+      # Fix esbuild in Alpine
+      - ESBUILD_BINARY_PATH=/app/node_modules/esbuild/bin/esbuild
+      - NODE_OPTIONS=--no-warnings
+      # Port and environment settings
+      - RACKGE_PORT=5050
+      # - NODE_ENV=development
+      # Enable Alpine mode detection
+      - ALPINE_MODE=true
+    entrypoint: ["sh", "/app/dev-entrypoint.sh"]
+    command: ["pnpm", "dev"]
+    # Add healthcheck to ensure the service is running properly
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:5050/api/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

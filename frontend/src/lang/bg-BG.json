@@ -101,7 +101,7 @@
     "connecting...": "Свързване със сокет сървъра…",
     "newUpdate": "Нова актуализация",
     "currentEndpoint": "Текущ",
-    "dockgeURL": "Rackge URL адрес (напр. http://127.0.0.1:5001)",
+    "rackgeURL": "Rackge URL адрес (напр. http://127.0.0.1:5050)",
     "agentOnline": "Онлайн",
     "agentOffline": "Офлайн",
     "connect": "Свържи",
@@ -109,7 +109,7 @@
     "agentAddedSuccessfully": "Агентът е добавен успешно.",
     "removeAgent": "Премахни агент",
     "removeAgentMsg": "Сигурни ли сте, че желаете да премахнете този агент?",
-    "dockgeAgent": "Rackge агент | Rackge агенти",
+    "rackgeAgent": "Rackge агент | Rackge агенти",
     "connecting": "Свързване",
     "agentRemovedSuccessfully": "Агентът е премахнат успешно.",
     "LongSyntaxNotSupported": "Дългият синтаксис не се поддържа тук. Моля, използвайте YAML редактора."

@@ -1,6 +1,6 @@
 services:
-  uptime-kuma:
-    image: louislam/uptime-kuma:1
+  monitx:
+    image: aknibircse/monitx:1
     volumes:
       - ./data:/app/data
     ports:

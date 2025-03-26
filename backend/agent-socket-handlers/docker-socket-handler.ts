@@ -1,5 +1,5 @@
 import { AgentSocketHandler } from "../agent-socket-handler";
-import { RackgeServer } from "../dockge-server";
+import { RackgeServer } from "../rackge-server";
 import { callbackError, callbackResult, checkLogin, RackgeSocket, ValidationError } from "../util-server";
 import { Stack } from "../stack";
 import { AgentSocket } from "../../common/agent-socket";

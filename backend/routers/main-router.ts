@@ -1,4 +1,4 @@
-import { RackgeServer } from "../dockge-server";
+import { RackgeServer } from "../rackge-server";
 import { Router } from "../router";
 import express, { Express, Router as ExpressRouter } from "express";
 

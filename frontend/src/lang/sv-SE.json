@@ -101,7 +101,7 @@
     "reconnecting...": "Återansluter…",
     "newUpdate": "Ny uppdatering",
     "currentEndpoint": "Nuvarande",
-    "dockgeURL": "Rackge URL (ex. http://127.0.0.1:5001)",
+    "rackgeURL": "Rackge URL (ex. http://127.0.0.1:5050)",
     "agentOnline": "On-line",
     "agentOffline": "Off-line",
     "connecting": "Ansluter",
@@ -110,7 +110,7 @@
     "agentRemovedSuccessfully": "Agent borttagen.",
     "removeAgent": "Ta bort agent",
     "removeAgentMsg": "Är du säker att du vill ta bort denna agent?",
-    "dockgeAgent": "Rackge agenter | Rackge agenter",
+    "rackgeAgent": "Rackge agenter | Rackge agenter",
     "agentAddedSuccessfully": "Agent tillagd.",
     "LongSyntaxNotSupported": "Lång syntax stöds inte här. Använd YAML-redigeraren."
 }

@@ -1,4 +1,4 @@
-import { RackgeServer } from "./dockge-server";
+import { RackgeServer } from "./rackge-server";
 import fs, { promises as fsAsync } from "fs";
 import { log } from "./log";
 import yaml from "yaml";
@@ -316,8 +316,8 @@ export class Stack {
 
             // This stack probably is not managed by Rackge, but we still want to show it
             if (!stack) {
-                // Skip the dockge stack if it is not managed by Rackge
-                if (composeStack.Name === "dockge") {
+                // Skip the rackge stack if it is not managed by Rackge
+                if (composeStack.Name === "rackge") {
                     continue;
                 }
                 stack = new Stack(server, composeStack.Name);

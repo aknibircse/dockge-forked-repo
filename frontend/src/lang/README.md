@@ -13,7 +13,7 @@ A simple guide on how to translate `Rackge` in your native language.
 
 ## How to add a new language in the dropdown
 
-1. Add your Language at <https://weblate.kuma.pet/projects/dockge/dockge/>.
+1. Add your Language at <https://weblate.kuma.pet/projects/rackge/rackge/>.
 2. Find the language code (You can find it at the end of the URL)
 3. Add your language at the end of `languageList` in `frontend/src/i18n.ts`, format: `"zh-TW": "繁體中文 (台灣)"`,
 4. Commit to new branch and make a new Pull Request for me to approve.

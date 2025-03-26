@@ -87,7 +87,7 @@ export class RackgeServer {
         // Catch unexpected errors here
         let unexpectedErrorHandler = (error : unknown) => {
             console.trace(error);
-            console.error("If you keep encountering errors, please report to https://github.com/louislam/dockge");
+            console.error("If you keep encountering errors, please report to https://github.com/aknibircse/rackge");
         };
         process.addListener("unhandledRejection", unexpectedErrorHandler);
         process.addListener("uncaughtException", unexpectedErrorHandler);
@@ -145,7 +145,7 @@ export class RackgeServer {
         this.config.sslKey = args.sslKey || process.env.RACKGE_SSL_KEY || undefined;
         this.config.sslCert = args.sslCert || process.env.RACKGE_SSL_CERT || undefined;
         this.config.sslKeyPassphrase = args.sslKeyPassphrase || process.env.RACKGE_SSL_KEY_PASSPHRASE || undefined;
-        this.config.port = args.port || Number(process.env.RACKGE_PORT) || 5001;
+        this.config.port = args.port || Number(process.env.RACKGE_PORT) || 5050;
         this.config.hostname = args.hostname || process.env.RACKGE_HOSTNAME || undefined;
         this.config.dataDir = args.dataDir || process.env.RACKGE_DATA_DIR || "./data/";
         this.config.stacksDir = args.stacksDir || process.env.RACKGE_STACKS_DIR || defaultStacksDir;
@@ -209,7 +209,7 @@ export class RackgeServer {
             cors,
             allowRequest: (req, callback) => {
                 let isOriginValid = true;
-                const bypass = isDev || process.env.UPTIME_KUMA_WS_ORIGIN_CHECK === "bypass";
+                const bypass = isDev || process.env.MONITX_WS_ORIGIN_CHECK === "bypass";
 
                 if (!bypass) {
                     let host = req.headers.host;
@@ -243,39 +243,39 @@ export class RackgeServer {
         });
 
         this.io.on("connection", async (socket: Socket) => {
-            let dockgeSocket = socket as RackgeSocket;
-            dockgeSocket.instanceManager = new AgentManager(dockgeSocket);
-            dockgeSocket.emitAgent = (event : string, ...args : unknown[]) => {
+            let rackgeSocket = socket as RackgeSocket;
+            rackgeSocket.instanceManager = new AgentManager(rackgeSocket);
+            rackgeSocket.emitAgent = (event : string, ...args : unknown[]) => {
                 let obj = args[0];
                 if (typeof(obj) === "object") {
                     let obj2 = obj as LooseObject;
-                    obj2.endpoint = dockgeSocket.endpoint;
+                    obj2.endpoint = rackgeSocket.endpoint;
                 }
-                dockgeSocket.emit("agent", event, ...args);
+                rackgeSocket.emit("agent", event, ...args);
             };
 
             if (typeof(socket.request.headers.endpoint) === "string") {
-                dockgeSocket.endpoint = socket.request.headers.endpoint;
+                rackgeSocket.endpoint = socket.request.headers.endpoint;
             } else {
-                dockgeSocket.endpoint = "";
+                rackgeSocket.endpoint = "";
             }
 
-            if (dockgeSocket.endpoint) {
-                log.info("server", "Socket connected (agent), as endpoint " + dockgeSocket.endpoint);
+            if (rackgeSocket.endpoint) {
+                log.info("server", "Socket connected (agent), as endpoint " + rackgeSocket.endpoint);
             } else {
                 log.info("server", "Socket connected (direct)");
             }
 
-            this.sendInfo(dockgeSocket, true);
+            this.sendInfo(rackgeSocket, true);
 
             if (this.needSetup) {
                 log.info("server", "Redirect to setup page");
-                dockgeSocket.emit("setup");
+                rackgeSocket.emit("setup");
             }
 
             // Create socket handlers (original, no agent support)
             for (const socketHandler of this.socketHandlerList) {
-                socketHandler.create(dockgeSocket, this);
+                socketHandler.create(rackgeSocket, this);
             }
 
             // Create Agent Socket
@@ -283,11 +283,11 @@ export class RackgeServer {
 
             // Create agent socket handlers
             for (const socketHandler of this.agentSocketHandlerList) {
-                socketHandler.create(dockgeSocket, this, agentSocket);
+                socketHandler.create(rackgeSocket, this, agentSocket);
             }
 
             // Create agent proxy socket handlers
-            this.agentProxySocketHandler.create2(dockgeSocket, this, agentSocket);
+            this.agentProxySocketHandler.create2(rackgeSocket, this, agentSocket);
 
             // ***************************
             // Better do anything after added all socket handlers here
@@ -296,16 +296,16 @@ export class RackgeServer {
             log.debug("auth", "check auto login");
             if (await Settings.get("disableAuth")) {
                 log.info("auth", "Disabled Auth: auto login to admin");
-                this.afterLogin(dockgeSocket, await R.findOne("user") as User);
-                dockgeSocket.emit("autoLogin");
+                this.afterLogin(rackgeSocket, await R.findOne("user") as User);
+                rackgeSocket.emit("autoLogin");
             } else {
                 log.debug("auth", "need auth");
             }
 
             // Socket disconnect
-            dockgeSocket.on("disconnect", () => {
+            rackgeSocket.on("disconnect", () => {
                 log.info("server", "Socket disconnected!");
-                dockgeSocket.instanceManager.disconnectAll();
+                rackgeSocket.instanceManager.disconnectAll();
             });
 
         });
@@ -335,7 +335,7 @@ export class RackgeServer {
 
         socket.instanceManager.sendAgentList();
 
-        // Also connect to other dockge instances
+        // Also connect to other rackge instances
         socket.instanceManager.connectAll();
     }
 
@@ -585,10 +585,10 @@ export class RackgeServer {
         let stackList;
 
         for (let socket of socketList) {
-            let dockgeSocket = socket as RackgeSocket;
+            let rackgeSocket = socket as RackgeSocket;
 
             // Check if the room is a number (user id)
-            if (dockgeSocket.userID) {
+            if (rackgeSocket.userID) {
 
                 // Get the list only if there is a logged in user
                 if (!stackList) {
@@ -598,11 +598,11 @@ export class RackgeServer {
                 let map : Map<string, object> = new Map();
 
                 for (let [ stackName, stack ] of stackList) {
-                    map.set(stackName, stack.toSimpleJSON(dockgeSocket.endpoint));
+                    map.set(stackName, stack.toSimpleJSON(rackgeSocket.endpoint));
                 }
 
-                log.debug("server", "Send stack list to user: " + dockgeSocket.id + " (" + dockgeSocket.endpoint + ")");
-                dockgeSocket.emitAgent("stackList", {
+                log.debug("server", "Send stack list to user: " + rackgeSocket.id + " (" + rackgeSocket.endpoint + ")");
+                rackgeSocket.emitAgent("stackList", {
                     ok: true,
                     stackList: Object.fromEntries(map),
                 });

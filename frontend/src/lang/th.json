@@ -100,7 +100,7 @@
     "extra": "พิเศษ",
     "reconnecting...": "กำลังเชื่อมต่อใหม่…",
     "newUpdate": "อัปเดตใหม่",
-    "dockgeAgent": "เอเย่นต์ Rackge | เอเย่นต์ Rackge",
+    "rackgeAgent": "เอเย่นต์ Rackge | เอเย่นต์ Rackge",
     "currentEndpoint": "ปัจุบัน",
     "agentOnline": "ออนไลน์",
     "agentOffline": "ออฟไลน์",
@@ -111,6 +111,6 @@
     "agentRemovedSuccessfully": "ลบเอเย่นต์สำเร็จ",
     "removeAgent": "ลบเอเย่นต์",
     "removeAgentMsg": "คุณแน่ใจหรือไม่ที่จะลบเอเย่นต์นี้?",
-    "dockgeURL": "ลิ้งก์ Rackge (เช่น http://127.0.0.1:5001)",
+    "rackgeURL": "ลิ้งก์ Rackge (เช่น http://127.0.0.1:5050)",
     "LongSyntaxNotSupported": "Syntax แบบยาสไม่รองรับที่นี่ กรุณาใช้ตัวแก้ไข YAML"
 }

@@ -1,5 +1,5 @@
 import { SocketHandler } from "../socket-handler.js";
-import { RackgeServer } from "../dockge-server";
+import { RackgeServer } from "../rackge-server.js";
 import { log } from "../log";
 import { checkLogin, RackgeSocket } from "../util-server";
 import { AgentSocket } from "../../common/agent-socket";

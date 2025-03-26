@@ -153,7 +153,7 @@ export default {
 
             result.sort((m1, m2) => {
 
-                // sort by managed by dockge
+                // sort by managed by rackge
                 if (m1.isManagedByRackge && !m2.isManagedByRackge) {
                     return -1;
                 } else if (!m1.isManagedByRackge && m2.isManagedByRackge) {

@@ -109,8 +109,8 @@
     "agentAddedSuccessfully": "Агент успешно добавлен.",
     "removeAgent": "Удалить агента",
     "removeAgentMsg": "Вы уверены, что хотите удалить этого агента?",
-    "dockgeAgent": "Агент Rackge | Агенты Rackge",
-    "dockgeURL": "URL-адрес Rackge (например: http://127.0.0.1:5001)",
+    "rackgeAgent": "Агент Rackge | Агенты Rackge",
+    "rackgeURL": "URL-адрес Rackge (например: http://127.0.0.1:5050)",
     "agentRemovedSuccessfully": "Агент успешно удален.",
     "LongSyntaxNotSupported": "Длинный синтаксис здесь не поддерживается. Пожалуйста, используйте редактор YAML."
 }

@@ -3,31 +3,35 @@
     "version": "26.3.2025",
     "type": "module",
     "engines": {
-        "node": ">= 18.0.0 && <= 18.17.1"
+        "node": ">= 18.0.0"
     },
     "scripts": {
         "fmt": "eslint \"**/*.{ts,vue}\" --fix",
         "lint": "eslint \"**/*.{ts,vue}\"",
         "check-ts": "tsc --noEmit",
         "start": "tsx ./backend/index.ts",
+        "start:prod": "node ./prod-runner.js",
         "dev": "concurrently -k -r \"wait-on tcp:5000 && pnpm run dev:backend \" \"pnpm run dev:frontend\"",
         "dev:backend": "cross-env NODE_ENV=development tsx watch --inspect ./backend/index.ts",
         "dev:frontend": "cross-env NODE_ENV=development vite --host --config ./frontend/vite.config.ts",
+        "build:backend": "node build-backend.js",
         "release-final": "tsx ./extra/test-docker.ts && tsx extra/update-version.ts && pnpm run build:frontend && npm run build:docker",
         "release-beta": "tsx ./extra/test-docker.ts && tsx extra/update-version.ts && pnpm run build:frontend && npm run build:docker-beta",
         "build:frontend": "vite build --config ./frontend/vite.config.ts",
-        "build:docker-base": "docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t louislam/dockge:base -f ./docker/Base.Dockerfile . --push",
-        "build:docker": "node ./extra/env2arg.js docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t louislam/dockge:latest -t louislam/dockge:1 -t louislam/dockge:$VERSION -t louislam/dockge:beta -t louislam/dockge:nightly --target release -f ./docker/Dockerfile . --push",
-        "build:docker-beta": "node ./extra/env2arg.js docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t louislam/dockge:beta -t louislam/dockge:$VERSION --target release -f ./docker/Dockerfile . --push",
-        "build:docker-nightly": "pnpm run build:frontend && docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t louislam/dockge:nightly --target nightly -f ./docker/Dockerfile . --push",
-        "build:healthcheck": "docker buildx build -f docker/BuildHealthCheck.Dockerfile --platform linux/amd64,linux/arm64,linux/arm/v7 -t louislam/dockge:build-healthcheck . --push",
-        "start-docker": "docker run --rm -p 5001:5001 --name rackge louislam/dockge:latest",
+        "build:frontend:version": "cross-env VERSION=$(node ./extra/get-version.js) vite build --config ./frontend/vite.config.ts",
+        "preview:frontend": "vite preview --config ./frontend/vite.config.ts --port 5055",
+        "build:preview": "pnpm run build:frontend:version && pnpm run preview:frontend",
+        "build:docker-base": "docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t aknibircse/rackge:base -f ./docker/Base.Dockerfile . --push",
+        "build:docker": "node ./extra/env2arg.js docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t aknibircse/rackge:latest -t aknibircse/rackge:1 -t aknibircse/rackge:$VERSION -t aknibircse/rackge:beta -t aknibircse/rackge:nightly --target release -f ./docker/Dockerfile . --push",
+        "build:docker-beta": "node ./extra/env2arg.js docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t aknibircse/rackge:beta -t aknibircse/rackge:$VERSION --target release -f ./docker/Dockerfile . --push",
+        "build:docker-nightly": "pnpm run build:frontend && docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t aknibircse/rackge:nightly --target nightly -f ./docker/Dockerfile . --push",
+        "build:healthcheck": "docker buildx build -f docker/BuildHealthCheck.Dockerfile --platform linux/amd64,linux/arm64,linux/arm/v7 -t aknibircse/rackge:build-healthcheck . --push",
+        "start-docker": "docker run --rm -p 5050:5050 --name rackge aknibircse/rackge:latest",
         "mark-as-nightly": "tsx ./extra/mark-as-nightly.ts",
         "reformat-changelog": "tsx ./extra/reformat-changelog.ts",
         "reset-password": "tsx ./extra/reset-password.ts"
     },
     "dependencies": {
-        "@homebridge/node-pty-prebuilt-multiarch": "0.11.14",
         "@inventage/envsubst": "^0.16.0",
         "@louislam/sqlite3": "~15.1.6",
         "bcryptjs": "~2.4.3",
@@ -46,6 +50,7 @@
         "knex": "~2.5.1",
         "limiter-es6-compat": "~2.1.2",
         "mysql2": "~3.12.0",
+        "node-pty-prebuilt-multiarch": "0.10.1-pre.5",
         "promisify-child-process": "~4.1.2",
         "redbean-node": "~0.3.3",
         "semver": "^7.6.3",
@@ -69,6 +74,7 @@
         "@types/command-exists": "~1.2.3",
         "@types/express": "~4.17.21",
         "@types/jsonwebtoken": "~9.0.7",
+        "@types/node": "^22.13.13",
         "@types/semver": "^7.5.8",
         "@typescript-eslint/eslint-plugin": "~6.8.0",
         "@typescript-eslint/parser": "~6.8.0",
@@ -97,5 +103,10 @@
         "vue-toastification": "2.0.0-rc.5",
         "wait-on": "^7.2.0",
         "xterm-addon-web-links": "~0.9.0"
+    },
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "sqlite3"
+        ]
     }
 }

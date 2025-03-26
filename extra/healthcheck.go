@@ -15,8 +15,8 @@ import (
 )
 
 func main() {
-	// Is K8S + "dockge" as the container name
-	// See https://github.com/louislam/uptime-kuma/pull/2083
+	// Is K8S + "rackge" as the container name
+	// See https://github.com/aknibircse/monitx/pull/2083
 	isK8s := strings.HasPrefix(os.Getenv("RACKGE_PORT"), "tcp://")
 
 	// process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
@@ -42,7 +42,7 @@ func main() {
 		port = os.Getenv("RACKGE_PORT")
 	}
 	if len(port) == 0 {
-		port = "5001"
+		port = "5050"
 	}
 
 	protocol := ""

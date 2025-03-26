@@ -1,13 +1,13 @@
 services:
-  dockge:
-    image: louislam/dockge:1
+  rackge:
+    image: aknibircse/rackge:latest
     restart: unless-stopped
     ports:
       # Host Port : Container Port
-      - 5001:5001
+      - ${RACKGE_PORT:-5050}:${RACKGE_PORT:-5050}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./data:/app/data
+      - ${RACKGE_DATA_DIR:-./data}:/app/data
         
       # If you want to use private registries, you need to share the auth file with Rackge:
       # - /root/.docker/:/root/.docker
@@ -16,7 +16,15 @@ services:
       # ⚠️ READ IT CAREFULLY. If you did it wrong, your data could end up writing into a WRONG PATH.
       # ⚠️ 1. FULL path only. No relative path (MUST)
       # ⚠️ 2. Left Stacks Path === Right Stacks Path (MUST)
-      - /opt/stacks:/opt/stacks
+      - ${RACKGE_STACKS_DIR:-/opt/stacks}:${RACKGE_STACKS_DIR:-/opt/stacks}
+    env_file:
+      - .env
     environment:
-      # Tell Rackge where is your stacks directory
-      - RACKGE_STACKS_DIR=/opt/stacks
+      # Override environment variables for production
+      - NODE_ENV=production
+      - RACKGE_IS_CONTAINER=true
+      
+      # SSL configuration (if provided)
+      - RACKGE_SSL_KEY=${RACKGE_SSL_KEY:-}
+      - RACKGE_SSL_CERT=${RACKGE_SSL_CERT:-}
+      - RACKGE_SSL_KEY_PASSPHRASE=${RACKGE_SSL_KEY_PASSPHRASE:-}

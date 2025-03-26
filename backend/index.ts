@@ -1,6 +1,6 @@
-import { RackgeServer } from "./dockge-server";
+import { RackgeServer } from "./rackge-server";
 import { log } from "./log";
 
-log.info("server", "Welcome to dockge!");
+log.info("server", "Welcome to rackge!");
 const server = new RackgeServer();
 await server.serve();

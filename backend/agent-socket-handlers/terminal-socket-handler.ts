@@ -1,4 +1,4 @@
-import { RackgeServer } from "../dockge-server";
+import { RackgeServer } from "../rackge-server";
 import { callbackError, callbackResult, checkLogin, RackgeSocket, ValidationError } from "../util-server";
 import { log } from "../log";
 import { InteractiveTerminal, MainTerminal, Terminal } from "../terminal";

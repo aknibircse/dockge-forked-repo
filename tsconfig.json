@@ -2,9 +2,19 @@
     "compilerOptions": {
         "module": "ESNext",
         "target": "ESNext",
-        "strict": true,
-        "moduleResolution": "bundler",
-        "skipLibCheck": true
+        "strict": false,
+        "moduleResolution": "node",
+        "skipLibCheck": true,
+        "outDir": "./backend/dist",
+        "rootDir": "./",
+        "sourceMap": true,
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "preserveSymlinks": true,
+        "noImplicitAny": false,
+        "types": ["node"],
+        "allowSyntheticDefaultImports": true,
+        "ignoreDeprecations": "5.0"
     },
     "include": [
         "backend/**/*",

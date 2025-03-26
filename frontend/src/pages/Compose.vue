@@ -96,7 +96,7 @@
 
                             <!-- Endpoint -->
                             <div class="mt-3">
-                                <label for="name" class="form-label">{{ $t("dockgeAgent") }}</label>
+                                <label for="name" class="form-label">{{ $t("rackgeAgent") }}</label>
                                 <select v-model="stack.endpoint" class="form-select">
                                     <option v-for="(agent, endpoint) in $root.agentList" :key="endpoint" :value="endpoint" :disabled="$root.agentStatusList[endpoint] != 'online'">
                                         ({{ $root.agentStatusList[endpoint] }}) {{ (endpoint) ? endpoint : $t("currentEndpoint") }}
@@ -143,7 +143,7 @@
                                 <label class="form-label">
                                     {{ $tc("url", 2) }}
                                 </label>
-                                <ArrayInput name="urls" :display-name="$t('url')" placeholder="https://" object-type="x-dockge" />
+                                <ArrayInput name="urls" :display-name="$t('url')" placeholder="https://" object-type="x-rackge" />
                             </div>
                         </div>
                     </div>
@@ -320,12 +320,12 @@ export default {
         },
 
         urls() {
-            if (!this.envsubstJSONConfig["x-dockge"] || !this.envsubstJSONConfig["x-dockge"].urls || !Array.isArray(this.envsubstJSONConfig["x-dockge"].urls)) {
+            if (!this.envsubstJSONConfig["x-rackge"] || !this.envsubstJSONConfig["x-rackge"].urls || !Array.isArray(this.envsubstJSONConfig["x-rackge"].urls)) {
                 return [];
             }
 
             let urls = [];
-            for (const url of this.envsubstJSONConfig["x-dockge"].urls) {
+            for (const url of this.envsubstJSONConfig["x-rackge"].urls) {
                 let display;
                 try {
                     let obj = new URL(url);
