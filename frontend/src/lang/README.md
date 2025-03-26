@@ -1,6 +1,6 @@
 # Translations
 
-A simple guide on how to translate `Dockge` in your native language.
+A simple guide on how to translate `Rackge` in your native language.
 
 ## How to Translate
 

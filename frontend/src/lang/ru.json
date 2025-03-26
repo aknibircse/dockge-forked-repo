@@ -24,7 +24,7 @@
     "saveStackDraft": "Сохранить",
     "notAvailableShort": "Н/Д",
     "deleteStackMsg": "Вы уверены что хотите удалить этот стек?",
-    "stackNotManagedByDockgeMsg": "Данный стек не управляется Dockge.",
+    "stackNotManagedByRackgeMsg": "Данный стек не управляется Rackge.",
     "primaryHostname": "Имя хоста",
     "general": "Основные",
     "container": "Контейнер | Контейнеры",
@@ -46,7 +46,7 @@
     "addContainer": "Добавить контейнер",
     "addNetwork": "Добавить сеть",
     "disableauth.message1": "Вы уверены что хотите <strong>отключить аутентификацию</strong>?",
-    "disableauth.message2": "Это предназначено для сценариев, <strong>когда Вы собираетесь использовать стороннюю аутентификацию</strong> перед Dockge, например Cloudflare Access, Authelia или другие механизмы аутентификации.",
+    "disableauth.message2": "Это предназначено для сценариев, <strong>когда Вы собираетесь использовать стороннюю аутентификацию</strong> перед Rackge, например Cloudflare Access, Authelia или другие механизмы аутентификации.",
     "passwordNotMatchMsg": "Повторный пароль не совпадает.",
     "autoGet": "Авто",
     "add": "Добавить",
@@ -109,8 +109,8 @@
     "agentAddedSuccessfully": "Агент успешно добавлен.",
     "removeAgent": "Удалить агента",
     "removeAgentMsg": "Вы уверены, что хотите удалить этого агента?",
-    "dockgeAgent": "Агент Dockge | Агенты Dockge",
-    "dockgeURL": "URL-адрес Dockge (например: http://127.0.0.1:5001)",
+    "dockgeAgent": "Агент Rackge | Агенты Rackge",
+    "dockgeURL": "URL-адрес Rackge (например: http://127.0.0.1:5001)",
     "agentRemovedSuccessfully": "Агент успешно удален.",
     "LongSyntaxNotSupported": "Длинный синтаксис здесь не поддерживается. Пожалуйста, используйте редактор YAML."
 }

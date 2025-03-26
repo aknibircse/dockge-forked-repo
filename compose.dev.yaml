@@ -1,0 +1,15 @@
+services:
+  rackge:
+    image: louislam/dockge:1
+    restart: unless-stopped
+    ports:
+      # Host Port : Container Port
+      - 5020:5001
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/app/data
+      # Mount stacks directory - using a local directory instead of /opt/stacks
+      - ./stacks:/app/stacks
+    environment:
+      # Tell Rackge where is your stacks directory
+      - RACKGE_STACKS_DIR=/app/stacks

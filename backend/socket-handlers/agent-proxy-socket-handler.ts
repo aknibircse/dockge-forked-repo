@@ -1,13 +1,13 @@
 import { SocketHandler } from "../socket-handler.js";
-import { DockgeServer } from "../dockge-server";
+import { RackgeServer } from "../dockge-server";
 import { log } from "../log";
-import { checkLogin, DockgeSocket } from "../util-server";
+import { checkLogin, RackgeSocket } from "../util-server";
 import { AgentSocket } from "../../common/agent-socket";
 import { ALL_ENDPOINTS } from "../../common/util-common";
 
 export class AgentProxySocketHandler extends SocketHandler {
 
-    create2(socket : DockgeSocket, server : DockgeServer, agentSocket : AgentSocket) {
+    create2(socket : RackgeSocket, server : RackgeServer, agentSocket : AgentSocket) {
         // Agent - proxying requests if needed
         socket.on("agent", async (endpoint : unknown, eventName : unknown, ...args : unknown[]) => {
             try {
@@ -41,7 +41,7 @@ export class AgentProxySocketHandler extends SocketHandler {
         });
     }
 
-    create(socket : DockgeSocket, server : DockgeServer) {
+    create(socket : RackgeSocket, server : RackgeServer) {
         throw new Error("Method not implemented. Please use create2 instead.");
     }
 }

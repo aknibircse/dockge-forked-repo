@@ -91,9 +91,9 @@
     "url": "URL | URLanna",
     "extra": "Breise",
     "newUpdate": "Nuashonrú Nua",
-    "dockgeAgent": "Aighne Dockge | Aighnithe Dockge",
+    "dockgeAgent": "Aighne Rackge | Aighnithe Rackge",
     "currentEndpoint": "Reatha",
-    "dockgeURL": "Dockge URL (e.g. http://127.0.0.1:5001)",
+    "dockgeURL": "Rackge URL (e.g. http://127.0.0.1:5001)",
     "agentOnline": "Ar Líne",
     "agentOffline": "As Líne",
     "connecting": "Ag Nascadh",
@@ -108,9 +108,9 @@
     "home": "Abhaile",
     "addFirstStackMsg": "Scríobh do chéad stac!",
     "notAvailableShort": "Níl ar Fáil",
-    "stackNotManagedByDockgeMsg": "Ní bhainistítear an staca seo ag Dockge.",
+    "stackNotManagedByRackgeMsg": "Ní bhainistítear an staca seo ag Rackge.",
     "containerName": "Ainm na gCoimeádán",
-    "disableauth.message2": "Tá sé deartha do chúinsí <strong>ina bhfuil sé beartaithe agat tríú páirtí athbhreithniú a chur i bhfeidhm</strong> os comhair Dockge cosúil le Rochtain Cloudflare, Authelia nó múnlaí deimhniú eile.",
+    "disableauth.message2": "Tá sé deartha do chúinsí <strong>ina bhfuil sé beartaithe agat tríú páirtí athbhreithniú a chur i bhfeidhm</strong> os comhair Rackge cosúil le Rochtain Cloudflare, Authelia nó múnlaí deimhniú eile.",
     "Settings": "Socruithe",
     "active": "gníomhach"
 }

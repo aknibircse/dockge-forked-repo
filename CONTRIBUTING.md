@@ -1,4 +1,4 @@
-## Can I create a pull request for Dockge?
+## Can I create a pull request for Rackge?
 
 Yes or no, it depends on what you will try to do. Since I don't want to waste your time, be sure to **create open a discussion, so we can have a discussion first**. Especially for a large pull request or you don't know if it will be merged or not.
 
@@ -20,7 +20,7 @@ Here are some references:
 - Any breaking changes
 - Duplicated pull requests
 - Buggy
-- UI/UX is not close to Dockge
+- UI/UX is not close to Rackge
 - Modifications or deletions of existing logic without a valid reason.
 - Adding functions that is completely out of scope
 - Converting existing code into other programming languages
@@ -38,7 +38,7 @@ Also, please don't rush or ask for an ETA, because I have to understand the pull
 
 I personally do not like something that requires so many configurations before you can finally start the app.
 
-- Settings should be configurable in the frontend. Environment variables are discouraged, unless it is related to startup such as `DOCKGE_STACKS_DIR`
+- Settings should be configurable in the frontend. Environment variables are discouraged, unless it is related to startup such as `RACKGE_STACKS_DIR`
 - Easy to use
 - The web UI styling should be consistent and nice
 - No native build dependency

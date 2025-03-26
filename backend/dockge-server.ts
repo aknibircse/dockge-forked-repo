@@ -21,7 +21,7 @@ import { R } from "redbean-node";
 import { genSecret, isDev, LooseObject } from "../common/util-common";
 import { generatePasswordHash } from "./password-hash";
 import { Bean } from "redbean-node/dist/bean";
-import { Arguments, Config, DockgeSocket } from "./util-server";
+import { Arguments, Config, RackgeSocket } from "./util-server";
 import { DockerSocketHandler } from "./agent-socket-handlers/docker-socket-handler";
 import expressStaticGzip from "express-static-gzip";
 import path from "path";
@@ -38,7 +38,7 @@ import { AgentSocket } from "../common/agent-socket";
 import { ManageAgentSocketHandler } from "./socket-handlers/manage-agent-socket-handler";
 import { Terminal } from "./terminal";
 
-export class DockgeServer {
+export class RackgeServer {
     app : Express;
     httpServer : http.Server;
     packageJSON : PackageJson;
@@ -142,13 +142,13 @@ export class DockgeServer {
         this.config = args as Config;
 
         // Load from environment variables or default values if args are not set
-        this.config.sslKey = args.sslKey || process.env.DOCKGE_SSL_KEY || undefined;
-        this.config.sslCert = args.sslCert || process.env.DOCKGE_SSL_CERT || undefined;
-        this.config.sslKeyPassphrase = args.sslKeyPassphrase || process.env.DOCKGE_SSL_KEY_PASSPHRASE || undefined;
-        this.config.port = args.port || Number(process.env.DOCKGE_PORT) || 5001;
-        this.config.hostname = args.hostname || process.env.DOCKGE_HOSTNAME || undefined;
-        this.config.dataDir = args.dataDir || process.env.DOCKGE_DATA_DIR || "./data/";
-        this.config.stacksDir = args.stacksDir || process.env.DOCKGE_STACKS_DIR || defaultStacksDir;
+        this.config.sslKey = args.sslKey || process.env.RACKGE_SSL_KEY || undefined;
+        this.config.sslCert = args.sslCert || process.env.RACKGE_SSL_CERT || undefined;
+        this.config.sslKeyPassphrase = args.sslKeyPassphrase || process.env.RACKGE_SSL_KEY_PASSPHRASE || undefined;
+        this.config.port = args.port || Number(process.env.RACKGE_PORT) || 5001;
+        this.config.hostname = args.hostname || process.env.RACKGE_HOSTNAME || undefined;
+        this.config.dataDir = args.dataDir || process.env.RACKGE_DATA_DIR || "./data/";
+        this.config.stacksDir = args.stacksDir || process.env.RACKGE_STACKS_DIR || defaultStacksDir;
         this.stacksDir = this.config.stacksDir;
 
         log.debug("server", this.config);
@@ -243,7 +243,7 @@ export class DockgeServer {
         });
 
         this.io.on("connection", async (socket: Socket) => {
-            let dockgeSocket = socket as DockgeSocket;
+            let dockgeSocket = socket as RackgeSocket;
             dockgeSocket.instanceManager = new AgentManager(dockgeSocket);
             dockgeSocket.emitAgent = (event : string, ...args : unknown[]) => {
                 let obj = args[0];
@@ -321,7 +321,7 @@ export class DockgeServer {
         }
     }
 
-    async afterLogin(socket : DockgeSocket, user : User) {
+    async afterLogin(socket : RackgeSocket, user : User) {
         socket.userID = user.id;
         socket.join(user.id.toString());
 
@@ -375,7 +375,7 @@ export class DockgeServer {
 
         log.debug("server", "User count: " + userCount);
 
-        // If there is no record in user table, it is a new Dockge instance, need to setup
+        // If there is no record in user table, it is a new Rackge instance, need to setup
         if (userCount == 0) {
             log.info("server", "No user, need setup");
             this.needSetup = true;
@@ -425,7 +425,7 @@ export class DockgeServer {
         if (!hideVersion) {
             versionProperty = packageJSON.version;
             latestVersionProperty = checkVersion.latestVersion;
-            isContainer = (process.env.DOCKGE_IS_CONTAINER === "1");
+            isContainer = (process.env.RACKGE_IS_CONTAINER === "1");
         }
 
         socket.emit("info", {
@@ -585,7 +585,7 @@ export class DockgeServer {
         let stackList;
 
         for (let socket of socketList) {
-            let dockgeSocket = socket as DockgeSocket;
+            let dockgeSocket = socket as RackgeSocket;
 
             // Check if the room is a number (user id)
             if (dockgeSocket.userID) {
@@ -665,7 +665,7 @@ export class DockgeServer {
      */
     disconnectAllSocketClients(userID: number | undefined, currentSocketID? : string) {
         for (const rawSocket of this.io.sockets.sockets.values()) {
-            let socket = rawSocket as DockgeSocket;
+            let socket = rawSocket as RackgeSocket;
             if ((!userID || socket.userID === userID) && socket.id !== currentSocketID) {
                 try {
                     socket.emit("refresh");

@@ -21,7 +21,7 @@ export class Settings {
 
     };
 
-    static cacheCleaner? : NodeJS.Timeout;
+    static cacheCleaner? : any;
 
     /**
      * Retrieve value of setting based on key

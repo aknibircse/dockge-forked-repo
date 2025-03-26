@@ -10,3 +10,12 @@ tmp
 # Git only
 frontend-dist
 
+.pnpm-store
+.github/config/
+.github/DISCUSSION_TEMPLATE/
+
+.github/workflows/FUNDING.yml
+.github/workflows/PULL_REQUEST_TEMPLATE.md
+
+CONTRIBUTING.md
+SECURITY.md

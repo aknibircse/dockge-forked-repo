@@ -9,7 +9,7 @@
                 </span>
             </h1>
 
-            <div v-if="stack.isManagedByDockge" class="mb-3">
+            <div v-if="stack.isManagedByRackge" class="mb-3">
                 <div class="btn-group me-2" role="group">
                     <button v-if="isEditMode" class="btn btn-primary" :disabled="processing" @click="deployStack">
                         <font-awesome-icon icon="rocket" class="me-1" />
@@ -81,7 +81,7 @@
                 ></Terminal>
             </transition>
 
-            <div v-if="stack.isManagedByDockge" class="row">
+            <div v-if="stack.isManagedByRackge" class="row">
                 <div class="col-lg-6">
                     <!-- General -->
                     <div v-if="isAdd">
@@ -224,8 +224,8 @@
                 </div>
             </div>
 
-            <div v-if="!stack.isManagedByDockge && !processing">
-                {{ $t("stackNotManagedByDockgeMsg") }}
+            <div v-if="!stack.isManagedByRackge && !processing">
+                {{ $t("stackNotManagedByRackgeMsg") }}
             </div>
 
             <!-- Delete Dialog -->
@@ -466,7 +466,7 @@ export default {
                 name: "",
                 composeYAML,
                 composeENV,
-                isManagedByDockge: true,
+                isManagedByRackge: true,
                 endpoint: "",
             };
 

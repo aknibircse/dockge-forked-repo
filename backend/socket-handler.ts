@@ -1,6 +1,6 @@
-import { DockgeServer } from "./dockge-server";
-import { DockgeSocket } from "./util-server";
+import { RackgeServer } from "./dockge-server";
+import { RackgeSocket } from "./util-server";
 
 export abstract class SocketHandler {
-    abstract create(socket : DockgeSocket, server : DockgeServer): void;
+    abstract create(socket : RackgeSocket, server : RackgeServer): void;
 }

@@ -2,7 +2,7 @@
     <img src="./frontend/public/icon.svg" width="128" alt="" />
 </div>
 
-# Dockge
+# Rackge
 
 A fancy, easy-to-use and reactive self-hosted docker compose.yaml stack-oriented manager.
 
@@ -21,7 +21,7 @@ View Video: https://youtu.be/AWAlOQeNpgU?t=48
 - 🦦 Interactive Web Terminal
 - 🕷️ (1.4.0 🆕) Multiple agents support - You can manage multiple stacks from different Docker hosts in one single interface
 - 🏪 Convert `docker run ...` commands into `compose.yaml`
-- 📙 File based structure - Dockge won't kidnap your compose files, they are stored on your drive as usual. You can interact with them using normal `docker compose` commands
+- 📙 File based structure - Rackge won't kidnap your compose files, they are stored on your drive as usual. You can interact with them using normal `docker compose` commands
 
 <img src="https://github.com/louislam/dockge/assets/1336778/cc071864-592e-4909-b73a-343a57494002" width=300 />
 
@@ -53,7 +53,7 @@ Requirements:
 - Default Port: 5001
 
 ```
-# Create directories that store your stacks and stores Dockge's stack
+# Create directories that store your stacks and stores Rackge's stack
 mkdir -p /opt/stacks /opt/dockge
 cd /opt/dockge
 
@@ -67,7 +67,7 @@ docker compose up -d
 # docker-compose up -d
 ```
 
-Dockge is now running on http://localhost:5001
+Rackge is now running on http://localhost:5001
 
 ### Advanced
 
@@ -120,7 +120,7 @@ https://github.com/louislam/dockge/issues
 https://github.com/louislam/dockge/discussions
 
 ### Translation
-If you want to translate Dockge into your language, please read [Translation Guide](https://github.com/louislam/dockge/blob/master/frontend/src/lang/README.md)
+If you want to translate Rackge into your language, please read [Translation Guide](https://github.com/louislam/dockge/blob/master/frontend/src/lang/README.md)
 
 ### Create a Pull Request
 
@@ -128,15 +128,15 @@ Be sure to read the [guide](https://github.com/louislam/dockge/blob/master/CONTR
 
 ## FAQ
 
-#### "Dockge"?
+#### "Rackge"?
 
-"Dockge" is a coinage word which is created by myself. I originally hoped it sounds like `Dodge`, but apparently many people called it `Dockage`, it is also acceptable.
+"Rackge" is a coinage word which is created by myself. I originally hoped it sounds like `Dodge`, but apparently many people called it `Dockage`, it is also acceptable.
 
 The naming idea came from Twitch emotes like `sadge`, `bedge` or `wokege`. They all end in `-ge`.
 
 #### Can I manage a single container without `compose.yaml`?
 
-The main objective of Dockge is to try to use the docker `compose.yaml` for everything. If you want to manage a single container, you can just use Portainer or Docker CLI.
+The main objective of Rackge is to try to use the docker `compose.yaml` for everything. If you want to manage a single container, you can just use Portainer or Docker CLI.
 
 #### Can I manage existing stacks?
 
@@ -144,21 +144,21 @@ Yes, you can. However, you need to move your compose file into the stacks direct
 
 1. Stop your stack
 2. Move your compose file into `/opt/stacks/<stackName>/compose.yaml`
-3. In Dockge, click the " Scan Stacks Folder" button in the top-right corner's dropdown menu
+3. In Rackge, click the " Scan Stacks Folder" button in the top-right corner's dropdown menu
 4. Now you should see your stack in the list
 
-#### Is Dockge a Portainer replacement?
+#### Is Rackge a Portainer replacement?
 
-Yes or no. Portainer provides a lot of Docker features. While Dockge is currently only focusing on docker-compose with a better user interface and better user experience.
+Yes or no. Portainer provides a lot of Docker features. While Rackge is currently only focusing on docker-compose with a better user interface and better user experience.
 
 If you want to manage your container with docker-compose only, the answer may be yes.
 
 If you still need to manage something like docker networks, single containers, the answer may be no.
 
-#### Can I install both Dockge and Portainer?
+#### Can I install both Rackge and Portainer?
 
 Yes, you can.
 
 ## Others
 
-Dockge is built on top of [Compose V2](https://docs.docker.com/compose/migrate/). `compose.yaml`  also known as `docker-compose.yml`.
+Rackge is built on top of [Compose V2](https://docs.docker.com/compose/migrate/). `compose.yaml`  also known as `docker-compose.yml`.

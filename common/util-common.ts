@@ -39,11 +39,26 @@ async function initRandomBytes() {
             return bytes;
         };
     } else {
-        randomBytes = (await import("node:crypto")).randomBytes;
+        try {
+            const crypto = await import("crypto");
+            // Convert Buffer to Uint8Array to maintain type compatibility
+            randomBytes = (numBytes: number) => {
+                const buffer = crypto.randomBytes(numBytes);
+                return new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+            };
+        } catch (e) {
+            // Fallback to node:crypto if crypto module is not available
+            const nodeCrypto = await import("node:crypto");
+            // Convert Buffer to Uint8Array to maintain type compatibility
+            randomBytes = (numBytes: number) => {
+                const buffer = nodeCrypto.randomBytes(numBytes);
+                return new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+            };
+        }
     }
 }
 
-export const ALL_ENDPOINTS = "##ALL_DOCKGE_ENDPOINTS##";
+export const ALL_ENDPOINTS = "##ALL_RACKGE_ENDPOINTS##";
 
 // Stack Status
 export const UNKNOWN = 0;

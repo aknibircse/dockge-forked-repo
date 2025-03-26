@@ -1,14 +1,16 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="640" height="640" viewBox="0 0 640 640" xml:space="preserve">
-<desc>Created with Fabric.js 5.3.0</desc>
-<defs>
-</defs>
-<g transform="matrix(0.9544918218 0 0 0.9544918218 320 325.5657767239)" id="0UAuLmXgnot4bJxVEVJCQ"  >
-<linearGradient id="SVGID_136_0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 -236.6470440833 -213.9441386034)"  x1="259.78" y1="261.15" x2="463.85" y2="456.49">
-<stop offset="0%" style="stop-color:#74C2FF;stop-opacity: 1"/>
-<stop offset="100%" style="stop-color:rgb(134,230,169);stop-opacity: 1"/>
-</linearGradient>
-<path style="stroke: rgb(242,242,242); stroke-opacity: 0.51; stroke-width: 190; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_136_0); fill-rule: nonzero; opacity: 1;"  transform=" translate(0, 0)" d="M 131.8665 -139.04883 C 159.01022 -111.20969000000001 170.12421 -99.45396000000001 203.11849999999998 -51.72057000000001 C 236.1128 -3.9871800000000093 264.44147999999996 83.98416999999998 187.33995 144.05073 C 177.72728999999998 151.53955 166.73827 158.81189999999998 154.65932999999998 165.65812999999997 C 69.85514999999998 213.72433999999998 -68.67309000000003 240.78578 -161.79279 174.28328999999997 C -268.17583 98.30862999999997 -260.10282 -68.66557000000003 -144.35093 -170.50579000000005 C -28.599040000000002 -272.34602000000007 104.72278 -166.88797000000005 131.86649999999997 -139.04883000000004 z" stroke-linecap="round" />
-</g>
+<?xml version="1.0" encoding="iso-8859-1"?>
+    <!-- Generator: Adobe Illustrator 19.1.1 SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="640px" height="640px">
+    
+    <path fill="#03A9F4" d="M40,20c0.391-1.735-0.092-3.78-2.5-6c-3.914,3.543-2.795,7.227-1.5,9c0,0-0.166,1-4,1S2,24,2,24S0.167,40,18,40c15.593,0,19.973-12.003,20.828-15.076C39.182,24.972,39.579,25.003,40,25c2.147-0.017,4.93-1.171,6-5.484C43.162,18.533,41.339,18.978,40,20z"/>
+    
+    <path fill="#0288D1" d="M2.165,28C2.9,32.739,5.983,40,18,40c12.185,0,17.523-7.33,19.682-12H2.165z"/>
+    
+    <path fill="#81D4FA" d="M19.812,39.938C18.892,39.616,14.74,38.848,14,33c-4.209,1.863-7.938,1.375-9.579,1.008C6.583,37.237,10.591,40,18,40C18.623,40,19.224,39.976,19.812,39.938z"/>
+    
+    <circle fill="#FFFFFF" cx="18" cy="32" r="2"/>
+    
+    <path fill="#37474F" d="M14.914,33.597c0.224,0.505,0.02,1.162-0.51,1.318c-3.301,0.973-6.146,1.102-8.297,1.102c-0.644-0.619-1.194-1.279-1.656-1.963c2.585,0,6.71-0.12,9.144-0.966C14.117,32.906,14.69,33.09,14.914,33.597z M2,27c0,0,1.875,0.125,3-1c1.875,1.688,5.94,1.088,7,0c1.063,1.688,6.938,1.375,8,0c1.25,1.438,6.625,1.75,8,0c0.479,1.461,6.819,1.874,8,0c1.061,1.088,5.063,1.938,7.311,0C43.875,27.188,46,27,46,27v1H2 M17,32c0,0.552,0.448,1,1,1s1-0.448,1-1s-0.448-1-1-1S17,31.448,17,32z"/><path fill="#01579B" d="M11,24H6v-5h5V24z M21,19h-5v5h5V19z M31,19h-5v5h5V19z M16,14h-5v5h5V14z M26,14h-5v5h5V14z"/>
+    
+    <path fill="#0288D1" d="M16,24h-5v-5h5V24z M26,19h-5v5h5V19z M26,9h-5v5h5V9z M21,14h-5v5h5V14z"/>
 </svg>

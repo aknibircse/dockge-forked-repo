@@ -10,7 +10,7 @@ const CHECK_URL = "https://dockge.kuma.pet/version";
 class CheckVersion {
     version = packageJSON.version;
     latestVersion? : string;
-    interval? : NodeJS.Timeout;
+    interval? : any;
 
     async startInterval() {
         const check = async () => {
