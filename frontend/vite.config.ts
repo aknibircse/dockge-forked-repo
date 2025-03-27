@@ -10,7 +10,7 @@ const viteCompressionFilter = /\.(js|mjs|json|css|html|svg)$/i;
 // https://vitejs.dev/config/
 export default defineConfig({
     server: {
-        port: 5000,
+        port: 5555,
         proxy: {
             '/api': {
                 target: 'http://localhost:5050',

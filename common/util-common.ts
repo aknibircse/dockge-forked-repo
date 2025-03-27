@@ -127,10 +127,45 @@ export const allowedCommandList : string[] = [
     "ls",
     "cd",
     "dir",
+    "pwd",
+    "cat",
+    "grep",
+    "find",
+    "echo",
+    "mkdir",
+    "rm",
+    "cp",
+    "mv",
+    "touch",
+    "clear",
+    "ps",
+    "df",
+    "du",
+    "free",
+    "top",
+    "htop",
+    "docker-compose",
 ];
 
 export const allowedRawKeys = [
     "\u0003", // Ctrl + C
+    "\u001b[A", // Up arrow
+    "\u001b[B", // Down arrow
+    "\u001b[C", // Right arrow
+    "\u001b[D", // Left arrow
+    "\u001b[H", // Home
+    "\u001b[F", // End
+    "\u007f",   // Backspace
+    "\u0008",   // Also Backspace
+    "\u0009",   // Tab
+    "\u001b[3~", // Delete
+    "\r",       // Enter/Return
+    "\n",       // Newline
+    "\u001b",   // Escape
+    "\u0004",   // Ctrl + D
+    "\u0012",   // Ctrl + R (history search)
+    "\u0001",   // Ctrl + A (beginning of line)
+    "\u0005",   // Ctrl + E (end of line)
 ];
 
 export const acceptedComposeFileNames = [

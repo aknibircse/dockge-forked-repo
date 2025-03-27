@@ -1,30 +1,82 @@
 services:
+  # Nginx service for HTTP/HTTPS access
+  # nginx:
+  #   image: nginx:alpine
+  #   restart: unless-stopped
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./docker/nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - ./docker/generate-ssl-certs.sh:/docker-entrypoint.d/10-generate-ssl-certs.sh:ro
+  #   depends_on:
+  #     - rackge
+  #   networks:
+  #     - rackge_network
+
+  # Build service for creating the nightly image
+  builder:
+    #image: aknibircse/rackge:nightly-builder
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      target: nightly
+      args:
+        - VERSION=${VERSION:-nightly}
+      cache_from:
+        - aknibircse/rackge:nightly
+    profiles:
+      - build
+    environment:
+      - NODE_ENV=production
+      # Disable native module builds for Alpine compatibility
+      - ROLLUP_NATIVE_DISABLE=true
+      - SKIP_NATIVE_BUILD=true
+      - NODE_PTY_MOCK=true
+      - npm_config_ignore_scripts=true
+      - npm_config_optional=true
+    command: echo "Nightly build completed"
+
+  # Runtime service for the nightly version
   rackge:
-    image: aknibircse/rackge:latest
+    #image: aknibircse/rackge:nightly
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      target: release
     restart: unless-stopped
     ports:
-      # Host Port : Container Port
-      - ${RACKGE_PORT:-5050}:${RACKGE_PORT:-5050}
+      - "5555:5555"
+      - "3000:3000"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${RACKGE_DATA_DIR:-./data}:/app/data
-        
-      # If you want to use private registries, you need to share the auth file with Rackge:
-      # - /root/.docker/:/root/.docker
-
-      # Stacks Directory
-      # ⚠️ READ IT CAREFULLY. If you did it wrong, your data could end up writing into a WRONG PATH.
-      # ⚠️ 1. FULL path only. No relative path (MUST)
-      # ⚠️ 2. Left Stacks Path === Right Stacks Path (MUST)
-      - ${RACKGE_STACKS_DIR:-/opt/stacks}:${RACKGE_STACKS_DIR:-/opt/stacks}
-    env_file:
-      - .env
+      - ${RACKGE_STACKS_DIR:-./stacks}:/app/stacks
+      - ./docker/node-pty-mock.sh:/app/docker/node-pty-mock.sh
     environment:
-      # Override environment variables for production
       - NODE_ENV=production
       - RACKGE_IS_CONTAINER=true
-      
-      # SSL configuration (if provided)
-      - RACKGE_SSL_KEY=${RACKGE_SSL_KEY:-}
-      - RACKGE_SSL_CERT=${RACKGE_SSL_CERT:-}
-      - RACKGE_SSL_KEY_PASSPHRASE=${RACKGE_SSL_KEY_PASSPHRASE:-}
+      - RACKGE_HOSTNAME=0.0.0.0
+      - RACKGE_PORT=5555
+      - TZ=${TZ:-UTC}
+      # Native module handling for Alpine
+      - ROLLUP_NATIVE_DISABLE=true
+      - SKIP_NATIVE_BUILD=true
+      - NODE_PTY_MOCK=true
+      - npm_config_ignore_scripts=true
+      - npm_config_optional=true
+      - UV_USE_IO_URING=0
+    entrypoint: ["/bin/sh", "-c"]
+    command: ["/app/docker/node-pty-mock.sh && node /app/prod-runner.js"]
+    healthcheck:
+      test: ["CMD", "/app/extra/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - rackge_network
+
+networks:
+  rackge_network:
+    driver: bridge

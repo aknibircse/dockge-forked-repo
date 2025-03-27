@@ -1,6 +1,6 @@
 {
     "name": "rackge",
-    "version": "26.3.2025",
+    "version": "26.3.2025-nightly-20250326141845",
     "type": "module",
     "engines": {
         "node": ">= 18.0.0"
@@ -11,7 +11,7 @@
         "check-ts": "tsc --noEmit",
         "start": "tsx ./backend/index.ts",
         "start:prod": "node ./prod-runner.js",
-        "dev": "concurrently -k -r \"wait-on tcp:5000 && pnpm run dev:backend \" \"pnpm run dev:frontend\"",
+        "dev": "concurrently -k -r \"wait-on tcp:5050 && pnpm run dev:backend \" \"pnpm run dev:frontend\"",
         "dev:backend": "cross-env NODE_ENV=development tsx watch --inspect ./backend/index.ts",
         "dev:frontend": "cross-env NODE_ENV=development vite --host --config ./frontend/vite.config.ts",
         "build:backend": "node build-backend.js",
@@ -25,6 +25,7 @@
         "build:docker": "node ./extra/env2arg.js docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t aknibircse/rackge:latest -t aknibircse/rackge:1 -t aknibircse/rackge:$VERSION -t aknibircse/rackge:beta -t aknibircse/rackge:nightly --target release -f ./docker/Dockerfile . --push",
         "build:docker-beta": "node ./extra/env2arg.js docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t aknibircse/rackge:beta -t aknibircse/rackge:$VERSION --target release -f ./docker/Dockerfile . --push",
         "build:docker-nightly": "pnpm run build:frontend && docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t aknibircse/rackge:nightly --target nightly -f ./docker/Dockerfile . --push",
+        "nightly": "./build-nightly.sh",
         "build:healthcheck": "docker buildx build -f docker/BuildHealthCheck.Dockerfile --platform linux/amd64,linux/arm64,linux/arm/v7 -t aknibircse/rackge:build-healthcheck . --push",
         "start-docker": "docker run --rm -p 5050:5050 --name rackge aknibircse/rackge:latest",
         "mark-as-nightly": "tsx ./extra/mark-as-nightly.ts",
@@ -56,6 +57,7 @@
         "semver": "^7.6.3",
         "socket.io": "~4.8.1",
         "socket.io-client": "~4.8.1",
+        "sqlite3^3.0.o": "link:@louislam/sqlite3^3.0.o",
         "timezones-list": "~3.0.3",
         "ts-command-line-args": "~2.5.1",
         "tsx": "~4.19.2",

@@ -1,0 +1,33 @@
+FROM node:18.12.0-alpine
+
+# Install build dependencies
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    git \
+    curl \
+    bash \
+    sqlite \
+    sqlite-dev
+
+# Set environment variables for the build
+ENV SKIP_NATIVE_BUILD=false \
+    npm_config_ignore_scripts=false \
+    npm_config_optional=true \
+    ROLLUP_NATIVE_DISABLE=false
+
+# Set up working directory
+WORKDIR /build
+
+# Copy the SQLite3 source code
+COPY ./node-sqlite3 /build/node-sqlite3
+
+# Copy the build script
+COPY ./build-sqlite3-alpine.sh /build/
+
+# Make the build script executable
+RUN chmod +x /build/build-sqlite3-alpine.sh
+
+# Run the build script
+CMD ["/build/build-sqlite3-alpine.sh"]

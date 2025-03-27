@@ -19,9 +19,16 @@ interface IPty {
 }
 
 try {
+    // First try to use node-pty-prebuilt-multiarch
     pty = require("node-pty-prebuilt-multiarch");
 } catch (error) {
-    console.warn("node-pty module not available, terminal functionality will be limited");
+    try {
+        // Fall back to node-pty if available (could be our mock implementation)
+        pty = require("node-pty");
+        console.log("Using node-pty module");
+    } catch (innerError) {
+        console.warn("node-pty module not available, terminal functionality will be limited");
+    }
 }
 import { LimitQueue } from "./utils/limit-queue";
 import { RackgeSocket } from "./util-server";

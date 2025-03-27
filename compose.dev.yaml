@@ -5,17 +5,28 @@ services:
       dockerfile: ./docker/Dockerfile
       target: development
     restart: unless-stopped
+    # Enable Docker's file watching capability
+    develop:
+      watch:
+        - action: sync
+          path: ./backend
+          target: /app/backend
+        - action: sync
+          path: ./frontend
+          target: /app/frontend
+        - action: sync
+          path: ./common
+          target: /app/common
     ports:
-      # Host Port : Container Port
-      - 5555:5000  # Frontend dev port (Vite server)
-      - 5050:5050  # Backend port (fixed for development)
-      - 3000:3000  # Alternative frontend port if needed
+      - 5555:5555
+      - "80:5050"
+      - "443:5050"
+      - 5050:5050
+      - 3000:3000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${RACKGE_DATA_DIR:-./data}:/app/data
-      # Mount stacks directory - using a local directory instead of /opt/stacks
       - ${RACKGE_STACKS_DIR:-./stacks}:/app/stacks
-      # Hot-reload volumes
       - ./backend:/app/backend
       - ./frontend:/app/frontend
       - ./common:/app/common
@@ -23,37 +34,61 @@ services:
       - ./tsconfig.json:/app/tsconfig.json
       - ./.env:/app/.env
       - ./docker/dev-entrypoint.sh:/app/dev-entrypoint.sh
+      - ./docker/node-pty-mock.sh:/app/node-pty-mock.sh
+      - ./docker/sqlite3-mock.sh:/app/docker/sqlite3-mock.sh
+      - ./docker/fix-migration-lock.sh:/app/docker/fix-migration-lock.sh
+      - ./docker/bypass-database.cjs:/app/docker/bypass-database.cjs
+      - ./docker/redbean-mock.cjs:/app/docker/redbean-mock.cjs
+      - ./docker/dependency-mocks.cjs:/app/docker/dependency-mocks.cjs
+      - ./docker/fix-redbean-knex.cjs:/app/docker/fix-redbean-knex.cjs
+      - ./docker/direct-database-fix.cjs:/app/docker/direct-database-fix.cjs
       - ./rollup-fix.cjs:/app/rollup-fix.cjs
-      # Add vite.config.js for Alpine compatibility
       - ./vite.config.js:/app/vite.config.js
+      - ./temp_sqlite3:/app/temp_sqlite3
     env_file:
       - .env
     environment:
-      # Additional environment variables
       - RACKGE_IS_CONTAINER=true
       - STORE_PATH=/opt/.pnpm-store
-      # Native module handling
-      - REBUILD_SQLITE=false
+      - REBUILD_SQLITE=true
+      # Mock node-pty implementation
+      - PNPM_ENABLE_SCRIPTS=true
+      - SKIP_NATIVE_BUILD=true
+      - NODE_PTY_MOCK=true
+      # SQLite configuration
+      - SQLITE_TIMEOUT=60000
+      - KNEX_DEBUG=true
+      - SQL_LOG=1
+      - RACKGE_SKIP_DB_MIGRATION=true
+      - RACKGE_MOCK_DATABASE=true
+      - RACKGE_DISABLE_DB_CONNECT=true
+      # Enable file watching for hot reload
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+      - FAST_REFRESH=true
       - USE_PREBUILT_FRONTEND=true
       - ROLLUP_NATIVE_DISABLE=true
-      - SKIP_NATIVE_BUILD=true
-      # Include all dependencies
+      - NODE_ENV=development
+      # Allow optional dependencies but skip native builds
       - npm_config_optional=true
+      - npm_config_ignore_scripts=true
+      - UV_USE_IO_URING=0
       - npm_config_include_dev=true
-      # Fix esbuild in Alpine
       - ESBUILD_BINARY_PATH=/app/node_modules/esbuild/bin/esbuild
       - NODE_OPTIONS=--no-warnings
-      # Port and environment settings
       - RACKGE_PORT=5050
-      # - NODE_ENV=development
-      # Enable Alpine mode detection
       - ALPINE_MODE=true
     entrypoint: ["sh", "/app/dev-entrypoint.sh"]
     command: ["pnpm", "dev"]
-    # Add healthcheck to ensure the service is running properly
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://localhost:5050/api/status"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
+    networks:
+      - rackge_network  # Attach service to custom bridge network
+
+networks:
+  rackge_network:
+    driver: bridge  # Define a bridged network

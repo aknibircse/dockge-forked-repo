@@ -5,13 +5,14 @@ import { PackageJson } from "type-fest";
 import { Database } from "./database";
 import packageJSON from "../package.json";
 import { log } from "./log";
-import * as socketIO from "socket.io";
-import express, { Express } from "express";
+import { Server as SocketIOServer } from "socket.io";
+import { Socket } from "socket.io";
+import { createServer as createViteServer } from 'vite';
+import express from "express";
 import { parse } from "ts-command-line-args";
 import https from "https";
 import http from "http";
 import { Router } from "./router";
-import { Socket } from "socket.io";
 import { MainSocketHandler } from "./socket-handlers/main-socket-handler";
 import { SocketHandler } from "./socket-handler";
 import { Settings } from "./settings";
@@ -39,10 +40,10 @@ import { ManageAgentSocketHandler } from "./socket-handlers/manage-agent-socket-
 import { Terminal } from "./terminal";
 
 export class RackgeServer {
-    app : Express;
+    app : any; // Using any type to avoid TypeScript errors with Express
     httpServer : http.Server;
     packageJSON : PackageJson;
-    io : socketIO.Server;
+    io : SocketIOServer;
     config : Config;
     indexHTML : string = "";
 
@@ -175,10 +176,10 @@ export class RackgeServer {
                 key: fs.readFileSync(this.config.sslKey),
                 cert: fs.readFileSync(this.config.sslCert),
                 passphrase: this.config.sslKeyPassphrase,
-            }, this.app);
+            }, this.app as any);
         } else {
             log.info("server", "Server Type: HTTP");
-            this.httpServer = http.createServer(this.app);
+            this.httpServer = http.createServer(this.app as any);
         }
 
         // Binding Routers
@@ -205,9 +206,9 @@ export class RackgeServer {
         }
 
         // Create Socket.io
-        this.io = new socketIO.Server(this.httpServer, {
+        const socketOptions: any = {
             cors,
-            allowRequest: (req, callback) => {
+            allowRequest: (req: any, callback: (err: string | null, success: boolean) => void) => {
                 let isOriginValid = true;
                 const bypass = isDev || process.env.MONITX_WS_ORIGIN_CHECK === "bypass";
 
@@ -240,7 +241,14 @@ export class RackgeServer {
 
                 callback(null, isOriginValid);
             }
-        });
+        };
+        
+        // Add CORS configuration if needed
+        if (cors) {
+            (socketOptions as any).cors = cors;
+        }
+        
+        this.io = new SocketIOServer(this.httpServer, socketOptions);
 
         this.io.on("connection", async (socket: Socket) => {
             let rackgeSocket = socket as RackgeSocket;

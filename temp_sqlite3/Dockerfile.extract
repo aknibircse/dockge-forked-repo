@@ -1,0 +1,22 @@
+FROM node:18.12.0-alpine
+
+# Install dependencies
+RUN apk add --no-cache curl npm python3 make g++
+
+# Create working directory
+WORKDIR /build
+
+# Install sqlite3 module
+RUN npm init -y && \
+    npm install @louislam/sqlite3@15.1.6 --build-from-source
+
+# Find and extract the binary
+RUN find /build/node_modules -name "node_sqlite3.node" -type f -exec cp {} /build/ \;
+
+# Create a simple script to verify the binary
+RUN echo "console.log('Testing SQLite3 binary...');" > test.js && \
+    echo "const sqlite3 = require('@louislam/sqlite3');" >> test.js && \
+    echo "console.log('SQLite3 version:', sqlite3.VERSION);" >> test.js && \
+    node test.js
+
+CMD ["sh", "-c", "cat /build/node_sqlite3.node"]

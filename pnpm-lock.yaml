@@ -80,6 +80,9 @@ importers:
       socket.io-client:
         specifier: ~4.8.1
         version: 4.8.1
+      sqlite3^3.0.o:
+        specifier: link:@louislam/sqlite3^3.0.o
+        version: link:@louislam/sqlite3^3.0.o
       timezones-list:
         specifier: ~3.0.3
         version: 3.0.3
@@ -117,9 +120,6 @@ importers:
       '@types/bcryptjs':
         specifier: ^2.4.6
         version: 2.4.6
-      '@types/better-sqlite3':
-        specifier: ^7.6.12
-        version: 7.6.12
       '@types/bootstrap':
         specifier: ~5.2.10
         version: 5.2.10
@@ -851,9 +851,6 @@ packages:
 
   '@types/bcryptjs@2.4.6':
     resolution: {integrity: sha512-9xlo6R2qDs5uixm0bcIqCeMCE6HiQsIyel9KQySStiyqNl2tnj2mP3DX1Nf56MD6KMenNNlBBsy3LJ7gUEQPXQ==}
-
-  '@types/better-sqlite3@7.6.12':
-    resolution: {integrity: sha512-fnQmj8lELIj7BSrZQAdBMHEHX8OZLYIHXqAKT1O7tDfLxaINzf00PMjw22r3N/xXh0w/sGHlO6SVaCQ2mj78lg==}
 
   '@types/body-parser@1.19.5':
     resolution: {integrity: sha512-fB3Zu92ucau0iQ0JMCFQE7b/dv8Ot07NI3KaZIkIUNXq82k4eBAqUaneXfleGY9JWskeS9y+u0nXMyspcuQrCg==}
@@ -3950,10 +3947,6 @@ snapshots:
     optional: true
 
   '@types/bcryptjs@2.4.6': {}
-
-  '@types/better-sqlite3@7.6.12':
-    dependencies:
-      '@types/node': 22.13.13
 
   '@types/body-parser@1.19.5':
     dependencies:
