@@ -7,7 +7,7 @@ const saltRounds = 10;
  * @param {string} password Password to hash
  * @returns {string} Hash
  */
-export function generatePasswordHash(password : string) {
+export function generatePasswordHash(password : string) : string {
     return bcrypt.hashSync(password, saltRounds);
 }
 
@@ -17,7 +17,7 @@ export function generatePasswordHash(password : string) {
  * @param {string} hash Hash to verify against
  * @returns {boolean} Does the password match the hash?
  */
-export function verifyPassword(password : string, hash : string) {
+export function verifyPassword(password : string, hash : string) : boolean {
     return bcrypt.compareSync(password, hash);
 }
 
@@ -37,7 +37,7 @@ export const SHAKE256_LENGTH = 16;
  * @param {number} len Output length of the hash
  * @returns {string} The hashed data in hex format
  */
-export function shake256(data : string, len : number) {
+export function shake256(data : string, len : number) : string  {
     if (!data) {
         return "";
     }

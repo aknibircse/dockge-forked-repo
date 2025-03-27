@@ -1,11 +1,26 @@
 import { RackgeSocket } from "./util-server";
 import { io, Socket as SocketClient } from "socket.io-client";
+import type { ManagerOptions } from "socket.io-client";
+import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { log } from "./log";
 import { Agent } from "./models/agent";
 import { isDev, LooseObject, sleep } from "../common/util-common";
 import semver from "semver";
 import { R } from "redbean-node";
 import dayjs, { Dayjs } from "dayjs";
+
+// Define custom socket.io client options interface with extraHeaders
+interface CustomSocketOptions extends Partial<ManagerOptions> {
+    extraHeaders?: Record<string, string>;
+    reconnection?: boolean;
+}
+
+// Extend Socket type to fix TypeScript errors
+type ExtendedSocket = SocketClient & {
+    on(event: string, listener: (...args: any[]) => void): ExtendedSocket;
+    emit(event: string, ...args: any[]): boolean;
+    disconnect(): ExtendedSocket;
+}
 
 /**
  * Rackge Instance Manager
@@ -14,7 +29,7 @@ import dayjs, { Dayjs } from "dayjs";
 export class AgentManager {
 
     protected socket : RackgeSocket;
-    protected agentSocketList : Record<string, SocketClient> = {};
+    protected agentSocketList : Record<string, ExtendedSocket> = {};
     protected agentLoggedInList : Record<string, boolean> = {};
     protected _firstConnectTime : Dayjs = dayjs();
 
@@ -39,12 +54,13 @@ export class AgentManager {
                 reject(new Error("The Rackge URL already exists"));
             }
 
+            // Create socket client with custom options
             let client = io(url, {
                 reconnection: false,
                 extraHeaders: {
                     endpoint,
                 }
-            });
+            } as CustomSocketOptions) as ExtendedSocket;
 
             client.on("connect", () => {
                 client.emit("login", {
@@ -126,11 +142,12 @@ export class AgentManager {
         }
 
         log.info("agent-manager", "Connecting to the socket server: " + endpoint);
+        // Create socket client with custom options
         let client = io(url, {
             extraHeaders: {
                 endpoint,
             }
-        });
+        } as CustomSocketOptions) as ExtendedSocket;
 
         client.on("connect", () => {
             log.info("agent-manager", "Connected to the socket server: " + endpoint);

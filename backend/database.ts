@@ -4,8 +4,9 @@ import { R } from "redbean-node";
 import { RackgeServer } from "./rackge-server";
 import fs from "fs";
 import path from "path";
-import knex from "knex";
-import sqlite from "better-sqlite3";
+// import knex from "knex";
+// Remove the sqlite import since we're using a mock implementation
+// import sqlite from "better-sqlite3";
 import Dialect from "knex/lib/dialects/sqlite3/index.js";
 
 // In-memory data store for mocking database operations
@@ -43,8 +44,10 @@ R.getCell = (sql) => {
 };
 R.debug = () => console.log("Mock R.debug called");
 
-// Mock the knex migrations
-R.knex = {
+// Create mock knex object
+const mockKnex = {
+  // Include original methods if they exist
+  ...(R.knex || {}),
   migrate: {
     latest: () => {
       console.log("Mock migration.latest called");
@@ -91,9 +94,16 @@ R.knex = {
   }
 };
 
+// Safely override R.knex getter to return our mock object
+Object.defineProperty(R, 'knex', {
+  get: function() {
+    return mockKnex;
+  }
+});
+
 // Add table query methods
 ['user', 'setting', 'agent', 'knex_migrations', 'knex_migrations_lock'].forEach(tableName => {
-  R.knex[tableName] = () => {
+  mockKnex[tableName] = () => {
     return {
       count: (column) => {
         return {

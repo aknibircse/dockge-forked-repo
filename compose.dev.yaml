@@ -18,7 +18,7 @@ services:
           path: ./common
           target: /app/common
     ports:
-      - 5555:5555
+      - 5556:5555
       - "80:5050"
       - "443:5050"
       - 5050:5050
@@ -45,6 +45,7 @@ services:
       - ./rollup-fix.cjs:/app/rollup-fix.cjs
       - ./vite.config.js:/app/vite.config.js
       - ./temp_sqlite3:/app/temp_sqlite3
+      - ./simplified-startup.cjs:/app/simplified-startup.cjs
     env_file:
       - .env
     environment:
@@ -78,8 +79,8 @@ services:
       - NODE_OPTIONS=--no-warnings
       - RACKGE_PORT=5050
       - ALPINE_MODE=true
-    entrypoint: ["sh", "/app/dev-entrypoint.sh"]
-    command: ["pnpm", "dev"]
+    entrypoint: ["sh"]
+    command: ["-c", "chmod +x /app/simplified-startup.cjs && node /app/simplified-startup.cjs"]
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://localhost:5050/api/status"]
       interval: 30s
